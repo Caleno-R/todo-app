@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import sys
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/todoapp'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:myPassword@localhost:5432/todoapp'
 db = SQLAlchemy(app)
 
 class Todo(db.Model):
@@ -18,7 +18,7 @@ class Todo(db.Model):
 db.create_all()
 
 
-@app.route('/todos/create', method=['POST'])
+@app.route('/todos/create', methods=['GET','POST'])
 def create_todo():
     body = {}
     error = False    
@@ -43,3 +43,6 @@ def create_todo():
 @app.route('/')
 def index():
     return render_template('index.html', data=Todo.query.all())
+
+if __name__ == '__main__':
+    app.run(debug=True)
